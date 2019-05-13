@@ -5,7 +5,7 @@ index_=max_cov(icasig_);
 Y_=[icasig_(index_,:); y2];
 %--------------------------------------------------------------------------
 [Wartermark] = fastica(Y_);
-imshow(Wartermark);
+%imshow(Wartermark);
 Wartermark=abs(Wartermark);
 WWW=ones(k,l);             
 if mean(Wartermark(2,:))<mean(Wartermark(1,:))

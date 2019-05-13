@@ -4,10 +4,14 @@ dim=size(A);
 m_subbp=floor(dim(1)/k);
 n_subbp=floor(dim(2)/l);
 %--------------------------------------------------------------------------
+
+
+%--------------------------------------------------------------------------
+
 for i=1:m_subbp*n_subbp  %1:m_subbp*n_subbp
     row=ceil(i/n_subbp);
-    column=n_subbp-(row*n_subbp-i);
-    B=ones(k,l); 
+    column=n_subbp-(row*n_subbp-i);%第i个子图所在列
+    B=ones(k,l); %一个子图
     for j=1:l
         Zi=Z(i,:);
         B(:,j)=( Zi( (j-1)*k+1:k*j) )';
