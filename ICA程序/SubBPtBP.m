@@ -1,4 +1,4 @@
-function DvdBptSubBp(A,k,l,Z)
+function SubBPtBP(A,k,l,Z)
 %--------------------------------------------------------------------------
 dim=size(A);  
 m_subbp=floor(dim(1)/k);

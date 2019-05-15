@@ -1,12 +1,6 @@
 %--------------------------------------------------------------------------
 % add attacks
-close all;
-A_ = imnoise(A,'gaussian',0,0.01);
-
-A_ = fspecial('gaussian',3,1);
-attackf=filter2(h,f);
-att='gaussian low pass';
-
+A_ = imnoise(A,'gaussian',0,0.001);
 S_CI_=DvdBptSubBp(A_,k,l);
 %--------------------------------------------------------------------------
 icasig_=W_matrix*S_CI_;
