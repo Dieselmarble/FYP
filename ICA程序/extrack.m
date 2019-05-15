@@ -1,11 +1,15 @@
 %--------------------------------------------------------------------------
 % add attacks
 close all;
-A_ = imnoise(A,'gaussian',0,0.01);
+% gaussian noise attack
+% A_ = imnoise(A,'gaussian',0,0.03);
 
-A_ = fspecial('gaussian',3,1);
-attackf=filter2(h,f);
-att='gaussian low pass';
+% cropping attack
+A_ = imcrop(A,[0 0 240 240]);
+A_ = padarray(A_,[240 240],0,'post');
+% A_ = fspecial('gaussian',3,1);
+% attackf=filter2(h,f);
+% att='gaussian low pass';
 
 S_CI_=DvdBptSubBp(A_,k,l);
 %--------------------------------------------------------------------------
@@ -36,6 +40,9 @@ for i=1:l
         end
     end
 end
+%WWW_=255*(1-WWW);
+WWW_ = 1- WWW;
 figure;
 imshow(WWW);
-ratio = psnr(mark,WWW,k,l);
+ratio = 10*log10(psnr(mark,WWW_,k,l));
+ratio_ = 10*log10(psnr(mark,WWW,k,l));

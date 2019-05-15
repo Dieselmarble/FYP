@@ -3,8 +3,8 @@ clear all; close all; clc;
 timer = 0;
 while timer < 1
 c=0.3;
-a=imread('lina.jpg');%original image
-b=imread('changsha.bmp')*255;%watermark
+a=imread('lina.jpg'); %original image
+b=imread('changsha.bmp')*255; %watermark
 [m1,n1]=size(a);
 [m2,n2]=size(b);
 e0=(sum(sum(a.^2)))/(m1*n1);
@@ -19,8 +19,9 @@ imwrite(uint8(aw),'watermark.jpg');
 % csvwrite('key.txt',reshape(tkey,m2,n2));
 v1=m1*m1*255*255;
 v2=sum(sum((double(a)-aw).^2));
-snr=10*log10(v1/v2);% ?????snr?
-disp('SNR');disp(snr);
+snr=10*log10(v1/v2);% signal to noise ratio
+disp('SNR');
+disp(snr);
 %---?????--------------------------------------------------------------
 % clear;
 % pause; 
@@ -111,27 +112,27 @@ end;
 max1=cor(1);max2=cor(2);
 m1=Rarr(idx(1),1);n1=Rarr(idx(1),2);
 m2=Rarr(idx(2),1);n2=Rarr(idx(2),2);
-maxcor(1)=abs(corr2(reshape(w(m1,:),map(1),map(2)),reshape(w(m2,:),map(1),map(2))))
-maxcor(2)=abs(corr2(reshape(w(m1,:),map(1),map(2)),reshape(w(n2,:),map(1),map(2))))
-maxcor(3)=abs(corr2(reshape(w(n1,:),map(1),map(2)),reshape(w(m2,:),map(1),map(2))))
-maxcor(4)=abs(corr2(reshape(w(n1,:),map(1),map(2)),reshape(w(n2,:),map(1),map(2))))
+maxcor(1)=abs(corr2(reshape(w(m1,:),map(1),map(2)),reshape(w(m2,:),map(1),map(2))));
+maxcor(2)=abs(corr2(reshape(w(m1,:),map(1),map(2)),reshape(w(n2,:),map(1),map(2))));
+maxcor(3)=abs(corr2(reshape(w(n1,:),map(1),map(2)),reshape(w(m2,:),map(1),map(2))));
+maxcor(4)=abs(corr2(reshape(w(n1,:),map(1),map(2)),reshape(w(n2,:),map(1),map(2))));
 if mean(maxcor)>(max1*0.8)
-stdw=fuse_pca(reshape(w(m1,:),map(1),map(2)), reshape(w(n1,:),map(1),map(2)));
-figure(4);
-subplot(1,2,1)
-imshow(b);
-title('original watermark');
-subplot(1,2,2)
-wf=255-100*abs(uint8(stdw));
-imshow(wf);
-title('watermark after pca fusion');
+    stdw=fuse_pca(reshape(w(m1,:),map(1),map(2)), reshape(w(n1,:),map(1),map(2)));
+    figure(4);
+    subplot(1,2,1)
+    imshow(b);
+    title('original watermark');
+    subplot(1,2,2)
+    wf=255-100*abs(uint8(stdw));
+    imshow(wf);
+    title('watermark after pca fusion');
 else
-disp('fusion again');
+    disp('fusion again');
 end;
 if abs(corr2(wf,b))>0.9
     break;
 end;
-timer = timer + 1;
+    timer = timer + 1;
 end;
 disp('similarity between watermarks');
 disp(corr2(wf,b));
