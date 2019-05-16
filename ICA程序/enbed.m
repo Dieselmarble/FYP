@@ -5,6 +5,7 @@ k=64;
 l=64; %32
 S_CI=DvdBptSubBp(A,k,l); %split into patches
 [icasig, A_matrix, W_matrix] =fastica(S_CI); %independent signals; mixing matrix; sepration matrix
+% A_matrix is 'ICA coefficients' which has super guassian distribution
 %---Step1------------------------------------------------------------------
 mark = imread('changsha.bmp');
 W=WMToV(mark); %wartermark.bmp
