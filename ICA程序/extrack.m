@@ -1,16 +1,16 @@
-%--------------------------------------------------------------------------
-% add attacks
 close all;
-% gaussian noise attack
-% A_ = imnoise(A,'gaussian',0,0.03);
-
-% cropping attack
-A_ = imcrop(A,[0 0 240 240]);
-A_ = padarray(A_,[240 240],0,'post');
+% add attacks
+% ------- gaussian noise attack ----------
+%A_ = imnoise(A,'gaussian',0,0.01);
+% ------- cropping attack ---------
+% A_ = imcrop(A,[0 0 240 240]);
+% A_ = padarray(A_,[240 240],0,'post');
+% ------- gaussian filter ----------
 % A_ = fspecial('gaussian',3,1);
 % attackf=filter2(h,f);
-% att='gaussian low pass';
-
+% ------- salt & pepper noise -------
+A_ = imnoise(A,'salt & pepper',0.0002);
+% reshape the image into patches
 S_CI_=DvdBptSubBp(A_,k,l);
 %--------------------------------------------------------------------------
 icasig_=W_matrix*S_CI_;
@@ -18,8 +18,8 @@ index_=max_cov(icasig_);
 Y_=[icasig_(index_,:); y2];
 %--------------------------------------------------------------------------
 [Wartermark] = fastica(Y_);
-%imshow(Wartermark);
-Wartermark=abs(Wartermark);
+Wartermark = abs(Wartermark);
+%Wartermark = normalize(Wartermark);
 WWW=ones(k,l);             
 if mean(Wartermark(2,:))<mean(Wartermark(1,:))
     mmm=Wartermark(2,:);
