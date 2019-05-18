@@ -22,7 +22,7 @@ Nw=size(watermarked_image,2);	        %Width
 max_message=Mw*Nw/(blocksize^2);
 
 % read in original watermark
-file_name='_copyright.bmp';
+file_name='changsha.bmp';
 orig_watermark=double(imread(file_name));
 
 % determine size of original watermark
@@ -64,3 +64,5 @@ elapsed_time=cputime-start_time,
 figure(2)
 imshow(message,[])
 title('Recovered Message')
+
+psnr2=10*log10(psnr(orig_watermark,message,Nw,Mw));

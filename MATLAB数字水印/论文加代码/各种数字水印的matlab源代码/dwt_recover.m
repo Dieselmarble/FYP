@@ -17,7 +17,7 @@ Mw=size(watermarked_image,1);	        %Height
 Nw=size(watermarked_image,2);	        %Width
 
 % read in original watermark
-file_name='_copyright.bmp';
+file_name='changsha.bmp';
 orig_watermark=double(imread(file_name));
 
 % determine size of original watermark
@@ -29,7 +29,7 @@ file_name='_key.bmp';
 key=double(imread(file_name))./256;
 
 % reset MATLAB's PN generator to state "key"
-rand('state',key);
+rand('state',17.9336);
 
 % initalize message to all ones
 message_vector=ones(1,Mo*No);
@@ -61,3 +61,4 @@ title('Recovered Watermark')
 
 % display processing time
 elapsed_time=cputime-start_time,
+psnr2=10*log10(psnr(orig_watermark,message,Nw,Mw));

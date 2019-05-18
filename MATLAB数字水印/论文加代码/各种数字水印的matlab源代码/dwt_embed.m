@@ -19,7 +19,7 @@ Mc=size(cover_object,1);	%Height
 Nc=size(cover_object,2);	%Width
 
 % read in the message image and reshape it into a vector
-file_name='_copyright.bmp';
+file_name='changsha.bmp';
 message=double(imread(file_name));
 Mm=size(message,1);	                        %Height
 Nm=size(message,2);	                        %Width
@@ -30,7 +30,7 @@ file_name='_key.bmp';
 key=double(imread(file_name))./256;
 
 % reset MATLAB's PN generator to state "key"
-rand('state',key);
+rand('state',17.9336);
 
 [cA1,cH1,cV1,cD1] = dwt2(cover_object,'haar');
 

@@ -33,7 +33,7 @@ Nc=size(cover_object,2);	        %Width
 max_message=Mc*Nc/(blocksize^2);
 
 % read in the message image
-file_name='_copyright.bmp';
+file_name='changsha.bmp';
 message=double(imread(file_name));
 Mm=size(message,1);	                %Height
 Nm=size(message,2);	                %Width
@@ -56,7 +56,7 @@ watermarked_image=cover_object;
 % read in key for PN generator
 file_name='_key.bmp';
 key=double(imread(file_name))./256;
-
+key = sum(key);
 % reset MATLAB's PN generator to state "key"
 rand('state',key);
 

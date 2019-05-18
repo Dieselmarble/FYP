@@ -21,7 +21,7 @@ midband=[   0,0,0,1,1,1,1,0;    % defines the mid-band frequencies of an 8x8 dct
             0,0,0,0,0,0,0,0 ];
         
 % read in the watermarked object
-file_name='dct2_watermarked_mod.bmp';
+file_name='dct2_watermarked.bmp';
 watermarked_image=double(imread(file_name));
 
 % determine size of watermarked image
@@ -32,7 +32,7 @@ Nw=size(watermarked_image,2);	        %Width
 max_message=Mw*Nw/(blocksize^2);
 
 % read in original watermark
-file_name='_copyright.bmp';
+file_name='changsha.bmp';
 orig_watermark=double(imread(file_name));
 
 % determine size of original watermark
@@ -42,7 +42,7 @@ No=size(orig_watermark,2);	%Width
 % read in key for PN generator
 file_name='_key.bmp';
 key=double(imread(file_name))./256;
-
+key = sum(key);
 % reset MATLAB's PN generator to state "key"
 rand('state',key);
 
@@ -99,3 +99,5 @@ elapsed_time=cputime-start_time,
 figure(2)
 imshow(message,[])
 title('Recovered Message')
+
+psnr2=10*log10(psnr(orig_watermark,message,Nw,Mw));
