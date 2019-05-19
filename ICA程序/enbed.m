@@ -52,7 +52,7 @@ W=WMToV(mark); %wartermark.bmp
 %--------------------------------------------------------------------------
 index=max_cov(icasig); %find maximum covariance(energy) in decomposed signal
 S_W=[icasig(index,:); W];
-SS = [0 1; 0.5 0.5];
+SS = [1 0.5;10 0];
 %-----Step3:Y=A*S_W--------------------------------------------------------
 Y=SS*double(S_W); %Y is a 2X2 matrix, linear combination of two observations
 y1=Y(1,:);

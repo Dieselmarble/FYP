@@ -1,7 +1,7 @@
 close all;
 % -------- add attacks --------------
 % ------- gaussian noise attack ----------
-A_ = imnoise(A,'gaussian',0,0.01);
+A_ = imnoise(A_embed,'gaussian',0,0.03);
 % ------- cropping attack ---------
 % A_ = imcrop(A,[0 0 240 240]);
 % A_ = padarray(A_,[240 240],0,'post');
@@ -9,7 +9,6 @@ A_ = imnoise(A,'gaussian',0,0.01);
 % A_ = fspecial('gaussian',3,1);
 % attackf=filter2(h,f);
 % ------- salt & pepper noise -------
-% A_ = A;
 % A_ = imnoise(A,'salt & pepper',0.0002);
 % reshape the image into patches
 S_CI_=DvdBptSubBp(A_,k,l);
@@ -17,6 +16,13 @@ S_CI_=DvdBptSubBp(A_,k,l);
 icasig_=W_matrix*S_CI_;
 index_=max_cov(icasig_);
 Y_=[icasig_(index_,:); y2];
+
+water = 2*Y_(2,:)-Y_(1,:);
+water = normalize(water*2);
+WWW = round(water,0);
+figure;
+imshow(reshape(WWW,64,64));
+
 %--------------------------------------------------------------------------
 [Watermark] = fastica(Y_);
 Watermark = abs(Watermark);
@@ -41,7 +47,7 @@ for i=1:l
         end
     end
 end
-%WWW_=255*(1-WWW);
+WWW_=255*(1-WWW);
 WWW_ = 1- WWW;
 figure;
 imshow(WWW);
