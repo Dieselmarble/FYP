@@ -1,8 +1,8 @@
 clear all; close all;
 A = imread('lena.jpg'); 
 % A=OpenBitmap('6.tif');
-k=64;
-l=64;
+k=32;
+l=32;
 S_CI=DvdBptSubBp(A,k,l); %split into patches
 % normalise
 % S_CI = normalize(S_CI);
@@ -30,8 +30,8 @@ S_CI=DvdBptSubBp(A,k,l); %split into patches
 % xlabel('Frequency (Hz)')
 % ylabel('Power/Frequency (dB/Hz)')
 % ------- histogram ---------------
-figure;
-histogram(A_matrix);
+% figure;
+% histogram(A_matrix);
 % A_matrix is 'ICA coefficients' which has super guassian distribution
 % icasig is the basis funcions
 % show all ica feature basis
@@ -45,22 +45,30 @@ histogram(A_matrix);
 % end
 %---Step1------------------------------------------------------------------
 mark = imread('changsha.bmp');
-b_CI=DvdBptSubBp(mark,k,l);
-[ica_mark, Ab_matrix, Wb_matrix] =fastica(b_CI);
-W=WMToV(mark); %wartermark.bmp
-
+B_CI=DvdBptSubBp(mark,k,l);
+[ica_b,b_A,b_W] =fastica(B_CI);
+mark_ = b_A*ica_b;
+A_embedSubBPtBP(mark_,k,l,S_CI)
+imshow(reshape(mark_b,64,64))
+[out_b,index_b] = sort(cov(ica_b),2);
 %--------------------------------------------------------------------------
-index=max_cov(icasig); %find maximum covariance(energy) in decomposed signal
-S_W=[icasig(index,:); W];
-SS = [0 1; 0.5 0.5];
-%-----Step3:Y=A*S_W--------------------------------------------------------
-Y=SS*double(S_W); %Y is a 2X2 matrix, linear combination of two observations
-y1=Y(1,:);
-y2=Y(2,:); 
-%--------------------------------------------------------------------------
-icasig(index,:)=y1;
-S_CI=inv(W_matrix)*icasig; % Remix the signals
+r = 2;
+alpha = 0.5;
+[out,index] = sort(cov(icasig),2,'ascend');
+Y_v = icasig;
+for i = 1:r
+    Y_v(225-i,:) =   alpha*ica_b(i,:);
+end
+S_CI=A_matrix*Y_v; % Remix the signals
 A_embed = SubBPtBP(A,k,l,S_CI); % Restore watermarked image
-%--------------------------------------------------------------------------
 figure;
 imshow(A_embed);
+
+S_CI_ = S_CI;
+Y_v = W_matrix*S_CI_;
+Y_w = zeros(4,1024);
+for i = 1:r
+    Y_w(i,:) = Y_v(225-i,:);
+end
+x_w = abs(b_A*Y_w);
+imshow(reshape(abs(x_w),64,64))

@@ -18,13 +18,13 @@ icasig_=W_matrix*S_CI_;
 index_=max_cov(icasig_);
 Y_=[icasig_(index_,:); y2];
 %--------------------------------------------------------------------------
-[Wartermark] = fastica(Y_);
-Wartermark = abs(Wartermark);
+[Watermark] = fastica(Y_);
+Watermark = abs(Watermark);
 % Wartermark = normalize(Wartermark);
 WWW=ones(k,l);             
-if mean(Wartermark(2,:))<mean(Wartermark(1,:))
-    mmm=Wartermark(2,:);
-else mmm=Wartermark(1,:); %choose the minimum row which contains the watermark
+if mean(Watermark(2,:))<mean(Watermark(1,:))
+    mmm=Watermark(2,:);
+else mmm=Watermark(1,:); %choose the minimum row which contains the watermark
 end
 %--------------------------------------------------------------------------
 for i=1:l
