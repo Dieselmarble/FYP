@@ -34,7 +34,7 @@ max_message=Mc*Nc/(blocksize^2);
 
 % read in the message image
 file_name='changsha.bmp';
-message=double(imread(file_name));
+message=double(imread(file_name))*255;
 Mm=size(message,1);	                %Height
 Nm=size(message,2);	                %Width
 
