@@ -24,7 +24,7 @@ max_message=Mc*Nc/(blocksize^2);
 
 % read in the message image
 file_name='changsha.bmp';
-message=double(imread(file_name));
+message=double(imread(file_name))*255;
 Mm=size(message,1);	                %Height
 Nm=size(message,2);	                %Width
 
@@ -107,7 +107,7 @@ imwrite(watermarked_image_int,'dct1_watermarked.bmp','bmp');
 elapsed_time=cputime-start_time,
 
 % display psnr of watermarked image
-psnr=psnr(cover_object,watermarked_image,Nc,Mc),
+psnr=10*log10(psnr(cover_object,watermarked_image,Nc,Mc)),
 
 % display watermarked image
 figure(1)

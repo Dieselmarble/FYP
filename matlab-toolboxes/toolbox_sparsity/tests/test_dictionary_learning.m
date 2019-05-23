@@ -6,10 +6,10 @@
 %
 %   Copyright (c) 2007 Gabriel Peyre
 
-path(path, 'toolbox/');
-path(path, '../toolbox_image_data/');
+% imloadpath(path, 'toolbox/');
+% path(path, '../toolbox_image_data/');
 
-test_type = 'signal';
+% test_type = 'signal';
 test_type = 'image';
 
 rep = 'results/dictionary-learning/';
@@ -41,7 +41,7 @@ switch test_type
         K = round( n*redun );           % number of atoms
         m = round( overtraining*K );    % number of samples
         % load random patches
-        name_list = {'lena', 'boat', 'flinstones', 'goldhill', 'frog', 'mountain', 'zelda'};     % 'barb', 
+        name_list = {'lena', 'barb'}%, 'boat', 'flinstones', 'goldhill', 'frog', 'mountain', 'zelda'};     % 'barb', 
         nbimg = length(name_list);
         Y = [];
         for i=1:nbimg
