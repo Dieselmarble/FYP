@@ -158,7 +158,7 @@ if isscalar(parameters.S.sourcesShape)
     parameters.S.dimensions = 2;
     parameters.shape2line = @(S) S;
     parameters.line2shape = @(S) S;
-    parameters.W = LinearOperator(@(x) redWave(x, 1, parameters.S),...
+    parameters.W = LinearOperator(@(x)redWave(x, 1, parameters.S),...
         @(x) redWave(x, -1, parameters.S));
 else
     parameters.S.dimensions = 2 : (length(parameters.S.sourcesShape) + 1);

@@ -42,5 +42,5 @@ __license__ = "CeCill"
 
 # -*- coding: utf-8 -*-
 
-from pyredwave.redwave import RedWave
-from pyredwave.redwave import mad_std
+from redwave import RedWave
+from redwave import mad_std

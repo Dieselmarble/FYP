@@ -2,9 +2,10 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-
+import sys
+sys.path.append('/Users/kevin/Documents/FYP/Python_files/pyGMCALab_v1/redwave_toolbox/pyredwave/pyredwave')
 from pyGMCA import bss
-from redwave_toolbox.pyredwave import RedWave
+from pyredwave import RedWave
 
 
 # %% create the data

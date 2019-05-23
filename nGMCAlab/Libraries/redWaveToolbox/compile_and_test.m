@@ -1,4 +1,4 @@
-mexingRoutine('redWave')
+mexingRoutine(['sources/' redWave])
 mexingRoutine('redWaveThresholding')
 mexingRoutine('redWaveInversion')
 
