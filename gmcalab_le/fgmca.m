@@ -37,17 +37,16 @@ SEst_r = zeros(NbSources,NbSamples);
 
 for pp=1:nmax
             
-            piA = inv(AA'*AA)*AA';
+            piA = inv(AA'*AA)*AA'; % definitaion of pesudo inverse
             
-            SEst_r = piA*X;
+            SEst_r = piA*X; % estimation of sources
             
-            SigmaSources = zeros(1,NbSources);
+            SigmaSources = zeros(1,NbSources); 
             
-            for ff = 1:NbSources
-                
-                   SEst_r(ff,:) = SEst_r(ff,:).*(abs(SEst_r(ff,:)) > KS*mad(SEst_r(ff,:)));
-
-                   SigmaSources(ff) = std(SEst_r(ff,:));
+            for ff = 1:NbSources        
+                   SEst_r(ff,:) = SEst_r(ff,:).*(abs(SEst_r(ff,:)) > KS*mad(SEst_r(ff,:))); % hard thresholding operater
+%                    SEst_r(ff,:) = sign(SEst_r(ff,:)).*max(abs(SEst_r(ff,:)) - KS/2,0);
+                   SigmaSources(ff) = std(SEst_r(ff,:)); % choose the support sets
 
             end
             
@@ -55,16 +54,16 @@ for pp=1:nmax
             
             if length(indd) > 0
             
-                    AA(:,indd) = X*SEst_r(indd,:)'*inv(SEst_r(indd,:)*SEst_r(indd,:)');
+                    AA(:,indd) = X*SEst_r(indd,:)'*inv(SEst_r(indd,:)*SEst_r(indd,:)'); %least quare estimation of mixing matrix A
                     
                     for ff = 1:length(indd)
                     
-                    	AA(:,indd(ff)) = AA(:,indd(ff))/norm(AA(:,indd(ff)));
+                    	AA(:,indd(ff)) = AA(:,indd(ff))/norm(AA(:,indd(ff))); %normalise matrix A
                                                        
                     end
              end
                            
-             KS = KS - DKS;
+             KS = KS - DKS; % decrease threshold 
 
 end
 

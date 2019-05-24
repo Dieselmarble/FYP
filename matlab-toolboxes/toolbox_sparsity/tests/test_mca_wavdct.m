@@ -1,12 +1,12 @@
 % Test for MCA decomposition in a wavelet+DCT basis.
 % Can handle only image separation or separation+inpainting
 
-path(path, 'toolbox/');
+% path(path, 'toolbox/');
 
 %% general options
 do_inpainting = 1;
-mask_type = 'user';
-mask_type = 'chessboard';
+% mask_type = 'user';
+% mask_type = 'chessboard';
 mask_type = 'rand';
 
 name = 'barb';
@@ -59,7 +59,7 @@ cpt.options = opt;
 cpt.callback =  @callback_atrou;
 cpt.name = 'wav';
 cpt.tv_correction = 1; % add TV penalty
-components{end+1} = cpt;
+components{1} = cpt;
 %% load the local DCT dictionary
 opt.w = 32;      % size of patches
 opt.q = opt.w/4; % controls overlap
@@ -71,7 +71,7 @@ opt.remove_lowfreq = 1; % force to 0 the lowfrequency
 cpt.options = opt;
 cpt.callback =  @callback_localdct;
 cpt.name = 'dct';
-components{end+1} = cpt;
+components{end} = cpt;
 
 %% options for MCA
 options.niter = 60;
