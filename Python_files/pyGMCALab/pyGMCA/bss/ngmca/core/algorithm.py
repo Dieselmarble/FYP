@@ -42,7 +42,7 @@
 # __license__ = "CeCill"
 
 from pyGMCA.bss.ngmca.core.tools import fill_parameters
-from PyQt4.QtGui import QApplication
+# from PyQt4.QtGui import QApplication
 from gc import collect
 from matplotlib import pyplot
 from numpy import NaN, ones, isscalar, ndarray, linalg, finfo
@@ -236,7 +236,7 @@ desactivated (_extract_current_iterate_matrix not implemented).""")
                     pyplot.clf()  # close()
                     collect()
                     self._parameters['display_function'](self._data)
-                    QApplication.processEvents()  # plt.draw()#time.sleep(0.01)
+                    # QApplication.processEvents()  # plt.draw()#time.sleep(0.01)
                     last_display_time = time.time()
             if self._parameters['verbose']:
                 print("Iteration %s/%s." % (self._iteration + 1,

@@ -41,9 +41,10 @@
 # __copyright__ = "(c) 2014 CEA"
 # __license__ = "CeCill"
 #
-# from pyGMCA import core
-# from pyGMCA.bss import tools
-# import numpy as np
+
+import core
+import pyGMCA.bss.ngmca.tools 
+import numpy as np
 
 
 class Ngmca(core.Algorithm):

@@ -40,5 +40,5 @@
 # __copyright__ = "(c) 2014 CEA"
 # __license__ = "CeCill"
 
-import algorithms
-import operators
+import pyGMCA.bss.ngmca.proximal.algorithms
+import pyGMCA.bss.ngmca.proximal.operators

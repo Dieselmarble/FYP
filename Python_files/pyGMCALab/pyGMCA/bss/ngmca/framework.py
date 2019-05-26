@@ -43,8 +43,8 @@
 
 # -*- coding: utf-8 -*-
 
-from pyGMCA import core
-from pyGMCA.bss import tools
+import pyGMCA.bss.ngmca.core
+import pyGMCA.bss.ngmca.tools
 import numpy as np
 
 
@@ -252,7 +252,7 @@ class Updater(object):
             return self.update(data, A, S, lambdas)
 
 
-class Framework(core.Algorithm):
+class Framework(core.algorithm):
     r"""
     GMCA framework class. This class implements GMCA algorithms and
     take as inputs updater instances for A and S.

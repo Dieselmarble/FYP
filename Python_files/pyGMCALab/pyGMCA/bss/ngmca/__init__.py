@@ -41,7 +41,7 @@
 # __license__ = "CeCill"
 #
 
-import base
+import ngmca.base
 import core
 import proximal
 import munkres

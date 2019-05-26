@@ -41,6 +41,5 @@
 # __license__ = "CeCill"
 #
 
-import algorithm
-from algorithm import Algorithm
+from pyGMCA.bss.ngmca.core.algorithm import Algorithm
 import tools

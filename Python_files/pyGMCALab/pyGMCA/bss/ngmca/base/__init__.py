@@ -40,6 +40,10 @@
 # __copyright__ = "(c) 2015 CEA"
 # __license__ = "CeCill"
 
-import algos
+import sys
+PYGMCALAB_PATH = "/Users/kevin/Documents/FYP/Python_files/pyGMCALab/pyGMCA/bss/ngmca"
+sys.path.insert(1,PYGMCALAB_PATH)
+
+from base.algos import *
 import tools
 import sample_nmr_spectra

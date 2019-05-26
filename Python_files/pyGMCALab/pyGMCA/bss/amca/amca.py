@@ -39,8 +39,9 @@
 
 """
 
-from pyGMCA.common.utils import randperm
-from pyGMCA.common.utils import mad
+
+from common.utils import randperm
+from common.utils import mad
 
 ################# AMCA Main function
 
