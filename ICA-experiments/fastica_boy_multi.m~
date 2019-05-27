@@ -1,5 +1,5 @@
 %%%%%%%%%%%%%%% Boy image %%%%%%%%%%%%%%%%%%%%%%%%
-clear all; close all; clc;
+clear all; clear all; clc;
 iS = 256;
 nTRs = 256;
 nComps = 2;
@@ -27,19 +27,17 @@ vecOrig2 = normalize(vecOrig2);
 
 
 % Observed image (mixtures)
-% img1 = vecOrig1 + vecOrig2;
-% img2 = vecOrig1 + vecOrig2;
-% x = [img1,img2];
+img1 = vecOrig1 + vecOrig2;
+img2 = vecOrig1 + vecOrig2;
+x = [img1,img2];
 % -------------------------- %
 Am = randn(2,2);
-Am = [0.2222,  1.3325;
-    0.3223,  0.1454];
-x = Am*[vecOrig1;vecOrig2];
-img1 = x(1,:);
-img2 = x(2,:);
-x = reshape(x.',1,[]);
+% x = Am*[vecOrig1;vecOrig2];
+% img1 = x(1,:);
+% img2 = x(2,:);
+% x = reshape(x.',1,[]);
 % number of PSNR coefficients to enumerate
-list_PSNR = [10:5:90];
+list_PSNR = [0:5:50];
 nIter = length(list_PSNR);
 % figure settings
 R_all = [];
@@ -47,14 +45,25 @@ noise = randn(size(x));
 Y = [];
 cri_all = [];
 for iter = 1:nIter
-    % define the PSNR peak signal to noise ratio imshow(reshape(ans1(:,2),256,256))
+    % define the PSNR peak signal to noise ratio
     PSNR  = list_PSNR(iter);
     sigma = std(x(:))*10^(-PSNR/20);
     y = x + sigma*noise; 
-    % Y = [Y;y];
+    Y = [Y;y];
     % perform fastICA 
     tempy = reshape(y,[65536,nMixtures]);
     [icasig,A,W] = fastica (tempy.', 'numOfIC', nComps, 'verbose','off');
+    for iter=1:nComps
+        C{iter}=reshape(icasig(iter,:),[iS iS]);
+    end;
+    R1 = corr2(imgc,C{1});
+    R2 = corr2(imgt,C{2});
+    R1 = abs(R1);
+    R2 = abs(R2);
+    R_all = [R_all;R1];
+    fprintf('correlation between MCA contour and original contour: %d \n', R1);
+    fprintf('correlation between MCA texture and original texture: %d \n', R2);
+    
     % get the correct permuation matrix 
     [MER,perm]=bss_eval_mix(Am,A);
     P = zeros(size(perm,1),size(perm,1));
@@ -64,21 +73,6 @@ for iter = 1:nIter
     % mxing matrix criterion
     cri =  mmc(Am,W,P);
     cri_all = [cri_all,cri];
-    % ---------------------------- %
-    % estimated sources
-    icasig = P*icasig;
-    for iter=1:nComps
-        C{iter}=reshape(icasig(iter,:),[iS iS]);
-    end;
-%     imshow(C{1});
-    R1 = corr2(normalize(imgt),normalize(C{1}));
-    R2 = corr2(normalize(imgc),normalize(C{2}));
-    R1 = abs(R1);
-    R2 = abs(R2);
-    R_all = [R_all;R1];
-%     fprintf('correlation between MCA contour and original contour: %d \n', R1);
-%     fprintf('correlation between MCA texture and original texture: %d \n', R2);
-    
 end;
 
 %plotting
@@ -88,5 +82,3 @@ xlabel('PSNR value')
 ylabel('Correlation') 
 figure;
 plot(list_PSNR,cri_all);
-xlabel('PSNR value') 
-ylabel('Mixing Matrix Criterion') 

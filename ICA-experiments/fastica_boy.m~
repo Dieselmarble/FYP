@@ -19,21 +19,20 @@ vecOrig2 = normalize(vecOrig2);
 % vecOrig2 = vecOrig2 + sqrt(var_gauss)*randn(size(vecOrig2)) + meanValue;
 
 % Observed image (mixtures)
-% Am = randn(2,2);
-% x = Am*[vecOrig1;vecOrig2];
-% img1 = x(1,:);
-% img2 = x(2,:);
-% x = reshape(x.',1,[]);
+A = randn(2,2);
+x = A*[vecOrig1;vecOrig2];
+img1 = x(1,:);
+img2 = x(2,:);
+x = reshape(x.',1,[]);
 % ------------------------------------ %
-img1 = 2*vecOrig1 + 3*vecOrig2;
-img2 = 1*vecOrig1 + 1*vecOrig2;
-x = [img1,img2];
-Am = [2,3;1,1];
+% img1 = 2*vecOrig1 + 3*vecOrig2;
+% img2 = 1*vecOrig1 + 1*vecOrig2;
+% x = [img1,img2];
 % define the PSNR peak signal to noise ratio
-PSNR  = 80;
+PSNR  = 10;
 sigma = std(x(:))*10^(-PSNR/20);
 noise = randn(size(x));
-y = x + sigma*noise; 
+y = x;% + sigma*noise; 
 
 % used by variance method, not PSNR
 % y = x + sqrt(var_gauss)*randn(size(x)) + meanValue;
@@ -80,10 +79,6 @@ fprintf('correlation between MCA contour and original contour: %d \n' , R1);
 R2 = corr2(imgt,C{2});
 fprintf('correlation between MCA texture and original texture: %d \n', R2);
 % get the correct permuation matrix 
-[MER,perm]=bss_eval_mix(Am,A);
-P = zeros(size(perm,1),size(perm,1));
-for i = 1:size(perm,1)
-    P(i,perm(i)) = 1;
-end
+[MER,perm]=bss_eval_mix(A,A)
 % mxing matrix criterion
-cri =  mmc(Am,W,P)
+cri =  mmc(A,W,P)

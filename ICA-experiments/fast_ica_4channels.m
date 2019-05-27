@@ -39,6 +39,7 @@ Xw = Xw + std2(Xw)*10^(-SNR_db/20)*randn(size(Xw));
 
 Sw =  piA*Xw;
 
+% choose the firt 4 mixtures
 wwc1 = reshape(Xw(1,:),length(im1),length(im1)); 
 wwc2 = reshape(Xw(2,:),length(im1),length(im1));
 wwc3 = reshape(Xw(3,:),length(im1),length(im1));
@@ -86,8 +87,8 @@ title('Mixture 4')
 % rearrange permuataion order of estimated sources
 s_collect = {im1;im2;im3;im4};
 esti_collect = {Sdn1;Sdn2;Sdn3;Sdn4};
-% s = [Sdn1(1,:);Sdn2(1,:);Sdn3(1,:);Sdn4(1,:)];
-s = [im1(1,:);im2(1,:);im3(1,:);im4(1,:)];
+s = [Sdn1(1,:);Sdn2(1,:);Sdn3(1,:);Sdn4(1,:)];
+% s = [im1(1,:);im2(1,:);im3(1,:);im4(1,:)];
 for j = 1:4
     cor = zeros(1,4);
     for i = 1:4
@@ -103,7 +104,8 @@ Sdn1 = esti_collect{1};Sdn2 = esti_collect{2};Sdn3 = esti_collect{3};Sdn4 = esti
 s_ = [Sdn1(1,:);Sdn2(1,:);Sdn3(1,:);Sdn4(1,:)];
 
 % P = floor(abs(s_*pinv(s))); % get permutation matrix p
-P = s_*pinv(piA*A*s);
+P = abs(s_*pinv(s));
+% P = s_*pinv(piA*A*s);
 figure
 subplot(221)
 imnb(Sdn1)
@@ -143,4 +145,6 @@ R2 = abs(corr2(im2,Sdn2));
 R3 = abs(corr2(im3,Sdn3));
 R4 = abs(corr2(im4,Sdn4));
 
-[mmc] = mmc(A,piA,P)
+cri = mmc(A,piA,P);
+
+% [MER,perm] = bss_eval_mix(pinv(piA),A);

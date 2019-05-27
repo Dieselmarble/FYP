@@ -48,12 +48,13 @@ for f=1:nbin,
             
             Aproj=A(:,jtrue,f)'*Ae(:,jest,f)/sum(abs(A(:,jtrue,f)).^2)*A(:,jtrue,f);
             MER(jest,jtrue,f)=10*log10(sum(abs(Aproj).^2)/sum(abs(Ae(:,jest,f)-Aproj).^2));
-            
+           
         end
         
     end
+    
 end
-MER=mean(MER,3);
+MER=mean(MER,3); %no effect on a 2D array
 % Selection of the best ordering
 perm=perms(1:nsrc);
 nperm=size(perm,1);
