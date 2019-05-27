@@ -39,7 +39,7 @@ img1 = x(1,:);
 img2 = x(2,:);
 x = reshape(x.',1,[]);
 % number of PSNR coefficients to enumerate
-list_PSNR = [10:5:90];
+list_PSNR = [1:5:90];
 nIter = length(list_PSNR);
 % figure settings
 R_all = [];
@@ -62,7 +62,7 @@ for iter = 1:nIter
         P(i,perm(i)) = 1;
     end
     % mxing matrix criterion
-    cri =  mmc(Am,W,P);
+    cri =  mmc_ica(Am,W,P);
     cri_all = [cri_all,cri];
     % ---------------------------- %
     % estimated sources

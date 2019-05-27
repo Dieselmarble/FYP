@@ -1,18 +1,19 @@
 % calculates the mixing matrix criterion
 % A: original mixing matrix
 % piA: estimated demixing matrix
-function [result] = mmc(A,piA,P)
+function [result] = mmc_ica(A,piA,P)
     [dim1,dim2] = size(A);
     dim = min(dim1,dim2);
     I = eye(dim,dim);
     pI = P*piA*A;
     for i = 1:dim
-        pI(:,i) = abs(pI(:,i))/max(abs(pI(:,i))); % scale the difference
+        pI(:,i) = abs(pI(:,i))/max(abs(pI(:,i)));
     end    
+    pI
 %     pI = abs(pI);
 %     for i = 1:dim
 %         pI(:,i) = pI(:,i)/sum(pI(:,i));
 %     end    
-%     result = sum(sum(pI-I)/(dim*(dim-1));
-    result = norm(abs(I-pI),1);
+    result = sum(sum(pI-I)/(dim*(dim-1));
+%     result = norm((I-pI),1);
 return
