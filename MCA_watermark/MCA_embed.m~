@@ -60,7 +60,7 @@ pars2=MakeList(pars12,pars22);
 pars3=MakeList(pars13,pars23);
 
 %% Call the MCA.
-itermax 	= 100;
+itermax 	= 20;
 tvregparam 	= 0.1;
 tvcomponent	= 1;
 expdecrease	= 1;
@@ -130,5 +130,3 @@ temp = watermarked_image + parts(:,:,1);
 figure;
 imshow(temp,[])
 title('Watermarked Image')
-%
-psnr(normalize(imgc),normalize(temp));

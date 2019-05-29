@@ -1,5 +1,5 @@
 
-import sparse2d as sp2
+# import sparse2d as sp2
 import numpy as np
 
 # pyStarlet
