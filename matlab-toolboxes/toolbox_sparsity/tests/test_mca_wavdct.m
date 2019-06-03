@@ -4,7 +4,7 @@
 % path(path, 'toolbox/');
 
 %% general options
-do_inpainting = 1;
+do_inpainting = 0;
 % mask_type = 'user';
 % mask_type = 'chessboard';
 mask_type = 'rand';

@@ -1,6 +1,6 @@
 % test for dictionary signature computation
 
-path(path, 'toolbox/');
+% path(path, 'toolbox/');
 
 w = 8; ww = w^2;
 k = 25; % width of the signature

@@ -6,7 +6,7 @@ nComps = 2;
 %sigma;
 
 meanValue = 0;
-var_gauss = 0.3;
+% var_gauss = 0.3;
 imgt = double(imread('texture4.tif'));
 imgc = double(imread('boy.tif'));
 vecOrig1 = imgt(:)';
@@ -30,15 +30,16 @@ img2 = 1*vecOrig1 + 1*vecOrig2;
 x = [img1,img2];
 Am = [2,3;1,1];
 % define the PSNR peak signal to noise ratio
-PSNR  = 80;
+PSNR  = 20;
 sigma = std(x(:))*10^(-PSNR/20);
 noise = randn(size(x));
 y = x + sigma*noise; 
 
 % used by variance method, not PSNR
 % y = x + sqrt(var_gauss)*randn(size(x)) + meanValue;
-
+tic
 [icasig,A,W] = fastica (reshape(y,[65536,2]).', 'numOfIC', nComps);
+toc
 %               Reduce dimension to 10, and estimate only 3
 %               independent components.
 
@@ -49,27 +50,27 @@ end;
 %Display image with scaled color
 %image(W,'CDataMapping','scaled');
 figure;
-imagesc(imgc);
+imshow(imgc,[]);
 colormap('gray');
 axis off;
 figure;
-imagesc(imgt);
+imshow(imgt,[]);
 colormap('gray');
 axis off;
 figure;
-imagesc(reshape(img1,256,256));
+imshow(reshape(img1,256,256),[]);
 colormap('gray');
 axis off;
 figure;
-imagesc(reshape(img2,256,256));
+imshow(reshape(img2,256,256),[]);
 colormap('gray');
 axis off;
 figure;
-imagesc(C{1});
+imshow(C{1},[]);
 colormap('gray');
 axis off;
 figure;
-imagesc(C{2});
+imshow(C{2},[]);
 colormap('gray');
 axis off;
 %display the final images in gray scale
@@ -86,4 +87,4 @@ for i = 1:size(perm,1)
     P(i,perm(i)) = 1;
 end
 % mxing matrix criterion
-cri =  mmc(Am,W,P)
+cri =  mmc_ica(Am,W,P)

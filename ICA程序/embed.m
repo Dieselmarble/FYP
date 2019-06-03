@@ -1,5 +1,6 @@
-clear all; close all;
-A = imread('lena.jpg'); 
+clear all; close all; clc;
+A = double(imread('lena.jpg'));
+% A= mat2gray(A);
 % A=OpenBitmap('6.tif');
 k=64;
 l=64;
@@ -41,10 +42,10 @@ histogram(A_matrix);
 % figure;
 % for i = 1:49
 %     subplot(7,7,i);
-%     imshow(reshape(icasig(i,:),64,64));
+%     imshow((reshape(icasig(i,:),64,64)));
 % end
 %---Step1------------------------------------------------------------------
-mark = imread('changsha.bmp');
+mark = double(imread('changsha.bmp'));
 b_CI=DvdBptSubBp(mark,k,l);
 [ica_mark, Ab_matrix, Wb_matrix] =fastica(b_CI);
 W=WMToV(mark); %wartermark.bmp
@@ -52,7 +53,8 @@ W=WMToV(mark); %wartermark.bmp
 %--------------------------------------------------------------------------
 index=max_cov(icasig); %find maximum covariance(energy) in decomposed signal
 S_W=[icasig(index,:); W];
-SS = [1 1;10 255];
+SS = [0.9 0.1;0.1 0.9];
+% SS = rand(2,2);
 %-----Step3:Y=A*S_W--------------------------------------------------------
 Y=SS*double(S_W); %Y is a 2X2 matrix, linear combination of two observations
 y1=Y(1,:);
@@ -63,5 +65,5 @@ S_CI=inv(W_matrix)*icasig; % Remix the signals
 A_embed = SubBPtBP(A,k,l,S_CI); % Restore watermarked image
 %--------------------------------------------------------------------------
 figure;
-imshow(A_embed);
+imshow(A_embed,[]);
 psnr_cover = 10*log10(psnr(A,A_embed,480,480));

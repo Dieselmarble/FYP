@@ -31,15 +31,15 @@ vecOrig2 = normalize(vecOrig2);
 % img2 = vecOrig1 + vecOrig2;
 % x = [img1,img2];
 % -------------------------- %
-Am = randn(2,2);
-Am = [0.2222,  1.3325;
-    0.3223,  0.1454];
+Am = randn(nMixtures,nComps);
+% Am = [0.2222,  1.3325;
+%     0.3223,  0.1454];
 x = Am*[vecOrig1;vecOrig2];
 img1 = x(1,:);
 img2 = x(2,:);
 x = reshape(x.',1,[]);
 % number of PSNR coefficients to enumerate
-list_PSNR = [1:5:90];
+list_PSNR = [3:5:40];
 nIter = length(list_PSNR);
 % figure settings
 R_all = [];
@@ -83,10 +83,10 @@ end;
 
 %plotting
 figure;
-plot(list_PSNR,R_all);
+plot(list_PSNR,R_all,'LineWidth',2);
 xlabel('PSNR value') 
 ylabel('Correlation') 
 figure;
-plot(list_PSNR,cri_all);
+plot(list_PSNR,cri_all,'LineWidth',2);
 xlabel('PSNR value') 
 ylabel('Mixing Matrix Criterion') 

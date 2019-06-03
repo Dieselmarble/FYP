@@ -27,7 +27,7 @@ A = randn(nc,4);
 
 Xw_ = A*[reshape(wc1,1,numel(wc1));reshape(wc2,1,numel(wc2));reshape(wc3,1,numel(wc3));reshape(wc4,1,numel(wc4))]; %--- input data for fgmca
 
-SNR_list = [3:5:90];
+SNR_list = [3:5:20];
 cri_all = [];
 R_all = [];
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

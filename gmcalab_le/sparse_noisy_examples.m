@@ -4,7 +4,7 @@
 
 close all; clear all; clc;
 
-SNR_db = 30;  %-- SNR in dB
+SNR_db = 10;  %-- SNR in dB
 
 nc = 10;  %-- Number of channels
 
@@ -107,18 +107,21 @@ s_ = [Sdn1(1,:);Sdn2(1,:);Sdn3(1,:);Sdn4(1,:)];
 P = abs(s_*pinv(s));
 % P = s_*pinv(piA*A*s);
 figure
-subplot(221)
-imnb(Sdn1)
-title('Thresholded Source - GMCA Output - 1')
-subplot(222)
-imnb(Sdn2)
-title('Thresholded Source - GMCA Output - 2')
-subplot(223)
-imnb(Sdn3)
-title('Thresholded Source - GMCA Output - 3')
-subplot(224)
-imnb(Sdn4)
-title('Thresholded Source - GMCA Output - 4')
+% subplot(221)
+imshow(Sdn1,[])
+% title('Thresholded Source - GMCA Output - 1')
+% subplot(222)
+figure
+imshow(Sdn2,[])
+% title('Thresholded Source - GMCA Output - 2')
+% subplot(223)
+figure
+imshow(Sdn3,[])
+% title('Thresholded Source - GMCA Output - 3')
+% subplot(224)
+figure
+imshow(Sdn4,[])
+% title('Thresholded Source - GMCA Output - 4')
 
 figure
 subplot(221)

@@ -14,5 +14,5 @@ function [result] = mmc(A,piA,P)
 %         pI(:,i) = pI(:,i)/sum(pI(:,i));
 %     end    
 %     result = sum(sum(pI-I)/(dim*(dim-1));
-    result = norm(abs(I-pI),1);
+    result = norm(abs(I-pI),'fro');
 return

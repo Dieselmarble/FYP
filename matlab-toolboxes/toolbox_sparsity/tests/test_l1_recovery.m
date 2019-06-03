@@ -1,6 +1,6 @@
 % test for homotopy solving
 
-path(path, 'toolbox/');
+% path(path, 'toolbox/');
 
 % number of measurements
 n = 100;
