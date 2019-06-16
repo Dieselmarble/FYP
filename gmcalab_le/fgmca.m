@@ -44,8 +44,8 @@ for pp=1:nmax
             SigmaSources = zeros(1,NbSources); 
             
             for ff = 1:NbSources        
-                   SEst_r(ff,:) = SEst_r(ff,:).*(abs(SEst_r(ff,:)) > KS*mad(SEst_r(ff,:))); % hard thresholding operater
-%                    SEst_r(ff,:) = sign(SEst_r(ff,:)).*max(abs(SEst_r(ff,:)) - KS/2,0);
+                   SEst_r(ff,:) = SEst_r(ff,:).*(abs(SEst_r(ff,:)) > KS*mad(SEst_r(ff,:))); % soft thresholding operater
+%                    SEst_r(ff,:) = sign(SEst_r(ff,:)).*max(abs(SEst_r(ff,:)) - KS/2,0);%hard thresholding
                    SigmaSources(ff) = std(SEst_r(ff,:)); % choose the support sets
 
             end

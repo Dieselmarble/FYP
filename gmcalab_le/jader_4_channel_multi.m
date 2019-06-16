@@ -19,11 +19,11 @@ im1 = double(imread('boat256.png'));
 im2 = double(imread('paraty256_2.tif'));
 im3 = double(imread('barbara256.png'));
 im4 = double(imread('pakhawaj.tif'));
-
-im1 = im1 - mean(reshape(im1,1,numel(im1)))*ones(size(im1));
-im2 = im2 - mean(reshape(im2,1,numel(im2)))*ones(size(im2));
-im3 = im3 - mean(reshape(im3,1,numel(im1)))*ones(size(im1));
-im4 = im4 - mean(reshape(im4,1,numel(im2)))*ones(size(im2));
+% 
+% im1 = im1 - mean(reshape(im1,1,numel(im1)))*ones(size(im1));
+% im2 = im2 - mean(reshape(im2,1,numel(im2)))*ones(size(im2));
+% im3 = im3 - mean(reshape(im3,1,numel(im1)))*ones(size(im1));
+% im4 = im4 - mean(reshape(im4,1,numel(im2)))*ones(size(im2));
 
 % Observed image (mixtures)
 Am = randn(nMixtures,nComps);
@@ -37,15 +37,15 @@ R_all = [];
 noise = randn(size(x));
 Y = [];
 cri_all = [];
-for iter = 1:1
+for iter = 1:nIter
     % define the PSNR peak signal to noise ratio imshow(reshape(ans1(:,2),256,256))
     PSNR  = list_PSNR(iter);
     sigma = std(x(:))*10^(-PSNR/20);
     y = x + sigma*noise; 
     % perform fastICA 
     tempy = reshape(y,[65536,nMixtures]);
-    [icasig,A,W] = fastica(tempy','numOfIC',nComps, 'verbose','off');
-%     W = jader(tempy',nComps);
+%     [icasig,A,W] = fastica(tempy','numOfIC',nComps, 'verbose','off');
+    W = jader(tempy',nComps);
     icasig = W*tempy';
     A = pinv(W);
     % get the correct permuation matrix 
@@ -66,12 +66,20 @@ for iter = 1:1
         C{iter}=reshape(icasig(iter,:),[iS iS]);
     end;
 %     imshow(C{1});
-    R1 = corr2(normalize(im1),normalize(C{1}));
-    R2 = corr2(normalize(im2),normalize(C{2}));
-    R3 = corr2(normalize(im3),normalize(C{3}));
-    R4 = corr2(normalize(im4),normalize(C{4}));
-    R = (abs(R1)+abs(R2)+abs(R3)+abs(R4))/4;
-    R_all = [R_all;R];
+    im_source1 = mat2gray(im1)*255;
+    im_source2 = mat2gray(im2)*255;
+    im_source3 = mat2gray(im3)*255;
+    im_source4 = mat2gray(im4)*255;
+    im_source_noisy1 =  mat2gray(reshape(C{1},size(im1)))*255;
+    im_source_noisy2 =  mat2gray(reshape(C{2},size(im2)))*255;
+    im_source_noisy3 =  mat2gray(reshape(C{3},size(im3)))*255;
+    im_source_noisy4 =  mat2gray(reshape(C{4},size(im4)))*255;
+    R1 = abs(corr2(im1, im_source_noisy1));
+    R2 = abs(corr2(im2, im_source_noisy2));
+    R3 = abs(corr2(im3, im_source_noisy3));
+    R4 = abs(corr2(im4, im_source_noisy4));
+    avg_R = (R1+R2+R3+R4)/4;
+    R_all = [R_all;avg_R];
 %     fprintf('correlation between MCA contour and original contour: %d \n', R1);
 %     fprintf('correlation between MCA texture and original texture: %d \n', R2);
     

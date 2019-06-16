@@ -51,12 +51,13 @@ switch test_type
             H = compute_random_patches(M,w,5*m, w);
             H = reshape(H, n,5*m);
             H = H ./ repmat( sqrt(sum(H.^2,1)), n,1 );
-            s = std(H); [tmp,I] = sort(s); I = I(end:-1:1);
+            s = std(H); [tmp,I] = sort(s); I = I(end:-1:1); % sorting refer to atom energy
             Y = [Y, H(:,I(1:m))];
         end
         sel = randperm(size(Y,2)); sel = sel(1:m);
         Y = Y(:,sel);
 end
+% normalisation
 Y = Y - repmat(mean(Y),[n 1]);
 Y = Y ./ repmat( sqrt(sum(Y.^2,1)), n,1 );
 
@@ -74,7 +75,7 @@ disp('--> Dictionary learning.');
 options.D = [];
 options.X = [];
 options.K = K;
-options.learning_method = 'mod';
+options.learning_method = 'ksvd';
 [D1,X1,E1] = perform_dictionary_learning(Y,options);
 
 % plot some learned basis vector
@@ -88,17 +89,18 @@ clf;
 options.ndim = ndim;
 options.normalization = 'clamp';
 H = display_dictionnary(D1, X1, nb, options );
-
+% display dictionary
+imshow(rescale(H));
 warning off;
 imwrite(rescale(H), [rep 'dictionary-mod.png'], 'png');
 warning on;
 
 return;
 
-options.learning_method = 'modortho';
-options.K = n;
-[D0,X0,E0] = perform_dictionary_learning(Y,options);
-options.K = K;
+% options.learning_method = 'modortho';
+% options.K = n;
+% [D0,X0,E0] = perform_dictionary_learning(Y,options);
+% options.K = K;
 
 options.learning_method = 'ksvd';
 [D2,X2,E2] = perform_dictionary_learning(Y,options);
@@ -118,11 +120,7 @@ axis tight;
 clf;
 display_dictionnary(D0, X0, nb, options );
 
-
-
 return;
-
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % compute the rate distortion

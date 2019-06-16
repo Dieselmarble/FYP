@@ -51,7 +51,7 @@ MaxItAfterSaddleTest=30; %%Maximum number of iterations after a saddle point was
 FinetuneMaxIt=50; %%Maximum number of improving iterations
 SupergaussianNL='rat3';  %Nonlinearity used for supergaussian signals 'gaus'-'ggda'-'npnl'-'rat3'
 status=0;
-min_correlation=0.9; %additive noise...0.75, noise free... 0.95, turn off (unstable)...0
+min_correlation=0; %additive noise...0.75, noise free... 0.95, turn off (unstable)...0
 test_of_saddle_points_nonln='rat2';
 
 %removing mean

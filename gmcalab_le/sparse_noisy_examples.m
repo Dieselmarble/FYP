@@ -4,7 +4,7 @@
 
 close all; clear all; clc;
 
-SNR_db = 10;  %-- SNR in dB
+SNR_db = 20;  %-- SNR in dB
 
 nc = 10;  %-- Number of channels
 
@@ -20,7 +20,7 @@ im2 = im2 - mean(reshape(im2,1,numel(im2)))*ones(size(im2));
 im3 = im3 - mean(reshape(im3,1,numel(im1)))*ones(size(im1));
 im4 = im4 - mean(reshape(im4,1,numel(im2)))*ones(size(im2));
 
-
+tic
 qmf = MakeONFilter('Battle',5);
 wc1 = FWT2_PO(double(im1),1,qmf);
 wc2 = FWT2_PO(double(im2),1,qmf);
@@ -35,7 +35,7 @@ Xw = Xw + std2(Xw)*10^(-SNR_db/20)*randn(size(Xw));
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-[piA,S] = fgmca(Xw,4,200,3); %optimal parameter (800,5) for soft thresholding ; (200,3) for hard thresholding
+[piA,S] = fgmca(Xw,4,400,3); %optimal parameter (800,5) for soft thresholding ; (200,3) for hard thresholding
 
 Sw =  piA*Xw;
 
@@ -69,6 +69,7 @@ S1 = IWT2_PO(wwc1,1,qmf);
 S2 = IWT2_PO(wwc2,1,qmf);
 S3 = IWT2_PO(wwc3,1,qmf);
 S4 = IWT2_PO(wwc4,1,qmf);
+toc
 
 figure
 subplot(221)
@@ -149,5 +150,7 @@ R3 = abs(corr2(im3,Sdn3));
 R4 = abs(corr2(im4,Sdn4));
 
 cri = mmc(A,piA,P);
-
+estimated = [Sdn1(:)';Sdn2(:)';Sdn3(:)';Sdn4(:)'];
+true = [im1(:)';im2(:)';im3(:)';im4(:)'];
+[SDR,ISR,SIR,SAR,perm] = bss_eval_images(estimated,true);
 % [MER,perm] = bss_eval_mix(pinv(piA),A);

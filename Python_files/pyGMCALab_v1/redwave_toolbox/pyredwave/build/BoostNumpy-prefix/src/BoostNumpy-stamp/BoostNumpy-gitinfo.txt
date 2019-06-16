@@ -1,3 +1,0 @@
-repository='https://github.com/ndarray/Boost.NumPy'
-module=''
-tag=''

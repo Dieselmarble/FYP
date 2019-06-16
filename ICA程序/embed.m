@@ -31,19 +31,24 @@ S_CI=DvdBptSubBp(A,k,l); %split into patches
 % xlabel('Frequency (Hz)')
 % ylabel('Power/Frequency (dB/Hz)')
 % ------- histogram ---------------
-figure;
-histogram(A_matrix);
+% figure;
+% histogram(A_matrix);
 % A_matrix is 'ICA coefficients' which has super guassian distribution
 % icasig is the basis funcions
 % show all ica feature basis
 % icasig(49,:)=0.001;
 % A_matrix(:,49)=0.001;
 % W_matrix(49,:)=0.001;
-% figure;
+figure;
+dictimg = showdict(normalize(icasig'),[1 1]*64,7,7,'lines','highcontrast');
+imshow(imresize(dictimg,2,'nearest'));
+
 % for i = 1:49
 %     subplot(7,7,i);
 %     imshow((reshape(icasig(i,:),64,64)));
 % end
+
+return
 %---Step1------------------------------------------------------------------
 mark = double(imread('changsha.bmp'));
 b_CI=DvdBptSubBp(mark,k,l);

@@ -1,2 +1,0 @@
-/Users/jbobin/Downloads/GMCAlab-python/pygmca/pyredwave/build/CMakeFiles/BoostNumpy.dir
-/Users/jbobin/Downloads/GMCAlab-python/pygmca/pyredwave/build/CMakeFiles/redwavecxx.dir
