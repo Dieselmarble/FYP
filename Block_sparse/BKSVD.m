@@ -1,12 +1,12 @@
-function [D2,X2,d2] = BKSVD(Y,K,k,s,d0,max_it,D1);
+function [D2] = BKSVD(Y,K,k,s,d0,max_it);
 %Run BKSVD+SAC
 
 % initialize dictionary with random columns of norm 1
-% D1 = randn(size(Y,1),K);
+D1 = randn(size(Y,1),K);
 D1 = D1 ./  repmat(sqrt(sum(D1.^2)),size(Y,1),1);
 D2 = D1;
 X1 = []; C1 = [];
-% h=waitbar(0,'BK-SVD & SAC');
+h=waitbar(0,'BK-SVD & SAC');
 for i = 1:max_it
     %ks-sparse reprentations of Y w.r.t D2 are calculated
     %(0 means only C2s is calculated, but not X2s, this is all we need for SAC)
@@ -19,9 +19,7 @@ for i = 1:max_it
     [X2 C2] = simult_sparse_coding(D2,Y,d2,k,1);
     %KSVD - updates every atom in D2 and nonzero values in X2 to minimize representation error
     [X2 D2] = KSVD(X2, D2, Y, d2, C2);
-%     waitbar(i/max_it);
+    waitbar(i/max_it);
 end
-% close(h);
-% EY = norm(Y,'fro');
-% e2 = norm(Y-D2*X2,'fro')/EY; %BKSVD error
+close(h);
 end

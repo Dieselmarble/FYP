@@ -13,9 +13,9 @@ clc
 clear
 close all
 
-nmax= 10; % maximum number of iterations
+nmax= 40; % maximum number of iterations
 % add noise
-SNR_db = 10;
+SNR_db = 20;
 % load random states for repeatable experiments
 % load RandomStates
 % rand('state', rand_state);
@@ -68,7 +68,7 @@ Y = Y + std2(Y)*10^(-SNR_db/20)*randn(size(Y)); %add noise type I
 sigma = std2(Y_zeronoise)*10^(-SNR_db/20);
 
 % ----------------------  add noise type II --------------------- %
-sigmamin = 1;
+sigmamin = 0.1;
 % noise = randn(size(Y)) * sigmamin;
 % Y = Y + noise;                
 
@@ -175,15 +175,17 @@ DKS = (KS-Kmin)/(nmax);  %-- Should be changed - Typical values for an appropria
 % plot(([xn(:,2) A(:,2)]));(([xn(:,2) A(:,2)]))
 
 
-s = 3; %dimension of blocks
+s = 4; %dimension of blocks
 k = 3;
 K = 256;           %Number of columns in dictionary
-max_it = 10;       %Nr of iterations for the algorithm to converge. 
+max_it = 1;       %Nr of iterations for the algorithm to converge. 
 B = K/s;          %Number of blocks in D. Should be an order of magnitude higher than the 
                   %block sparsity k, otherwise the representations wont be sparse
 d0 = repmat(1:B, s,1); d0 = d0(:)';  %block structure with B blocks of size s
 Re_all = [];
+atom_count = [];
 tic
+
 for (pp=1:nmax)
     
     for ff = 1:NbSources      
@@ -199,7 +201,7 @@ for (pp=1:nmax)
                 Data(:,cnt)=patch(:); % Data has size 64*1, patches is 8*8
                 cnt=cnt+1; % 15626
             end;
-        end; 
+        end
         dc = 0;
         %         [Data, dc] = remove_dc(Data,'columns');
         Dictionary = dict(:,:,ff);
@@ -222,11 +224,6 @@ for (pp=1:nmax)
             %===22222============OR KSVD ========================================
             % Update the dictionary
             Dictionary(:,1)=Dictionary(:,1); % the DC term remain unchanged
-%             old_dictionary = Dictionary;
-            % --------------------------------------------------------------- %
-%             [Dictionary,CoefMatrix,d2] = BKSVD(Data,K,k,s,d0,max_it,old_dictionary);
-%             d_list{ff} = d2;
-%             --------------------------------------------------------------- %
             for j=2:1:size(Dictionary,2) % implement the K-SVD algorithm
                 relevantDataIndices=find(CoefMatrix(j,:)); %Find indices of nonzero elements.
                 if ~isempty(relevantDataIndices)
@@ -238,6 +235,26 @@ for (pp=1:nmax)
                     Dictionary(:,j)=betterDictionaryElement;
                 end;
             end;
+            %===33333============BK-SVD ========================================
+%             old_dictionary = Dictionary;
+%             [Dictionary,CoefMatrix,d2] = BKSVD(Data,K,k,s,d0,max_it,old_dictionary);
+%             d_list{ff} = d2;
+            %===44444============Another KSVD ========================================
+
+%             for i = 1:max_it
+%                 %block sparse coding
+%                 %k*s-sparse reprentations of Y w.r.t D1 are calculated
+%                 %(d0= [1,2,...,K] means sparse and not block sparse)
+%                 %1 means X1 is explicitly calculated
+%                 [CoefMatrix C1] = simult_sparse_coding(Dictionary,Data,d0,k*s,1);
+%                 %KSVD - updates every atom in D1 and nonzero values in X1 to minimize representation error
+%                 [CoefMatrix Dictionary] = KSVD(CoefMatrix, Dictionary, Data, d0, C1);
+%                 % KSVD method and BKSVD method use same number of iterations:
+%             %     if (i==max_it)
+%             %         D2=D1; % save KSVD results after half the iterations
+%             %     end
+%             end
+%             
             % ---------------------------------------------------- %
         end
         dict(:,:,ff) = Dictionary;
@@ -309,13 +326,17 @@ for (pp=1:nmax)
         E = Y-AA*SEst_r;
         his3(ff,pp)=norm(Data-Dictionary*CoefMatrix);
     end
-    
+    [Dictionary,CoefMatrix,d2] = BKSVD(Data,K,k,s,d0,max_it,Dictionary);
+    dict(:,:,ff) = Dictionary;
+    % count number of non-zero coefficients 
+%     count = nnz(All_Coef{ff});
+%     atom_count = [atom_count;count];
     %     AA=AA2;    
 %     svd(AA)
 %     Dict_all = [Dict_all; Dictionary];
     svdA = [svdA svd(AA)]; % returns a vector containing the singular values.
     
-    his = [his norm(E,'fro')];
+%     his = [his norm(E,'fro')];
     his1 = [his1 norm(Y-AA*SEst_r,'fro')];
     his2 = [his2 std2(Ei)];
     [xn,Q]=nearest_w(AA,A);
@@ -341,12 +362,12 @@ for (pp=1:nmax)
     %========== GLOBAL MMCA PARAMETERS=======================================
         
 %     lambda = lambda + lamstep;
-        sigma = sigma - sig;
+     sigma = sigma - sig;
 %         sigma = sigma0*exp(1./nmax*log((sigmamin+offset)/sigma0)*pp);
 %     plot(sigma0*exp(1./nmax*log((sigmamin+offset)/sigma0)*(1:nmax)));
      
 
-%     lambda = 50/sigma;
+    lambda = 30/sigma;
         
     %     lambda=exp(.5./sigma);
     %         mu = 3/sigma;    
@@ -365,15 +386,13 @@ for (pp=1:nmax)
     %     lambda2 = KS;
     KS = KS - DKS;
     E = Y - AA*SEst_r;
-    Re = norm(E,2)/65536;
-    Re_all = [Re_all; Re];
     %==========================================================================
-    
     disp(pp)
 end
 
 toc
 S=SEst_r;
+plot([his' his1']);title('||Y-AS||_F');
 % S = pinv(AA)*Y;
 
 [xn,Q]=nearest_w(AA,A);
@@ -434,8 +453,9 @@ for imiter = 1:4
 end
 % mixing matrix criterion
 mmc(A,pinv(AA),Q)
+figure
+semilogy(1:nmax,his1)
 
-plot(Re_all);
 
 %%
 

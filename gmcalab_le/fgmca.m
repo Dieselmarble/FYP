@@ -1,4 +1,4 @@
-function [piA,S] = fgmca(X,NbSources,nmax,Kmin)
+function [piA,S,his1] = fgmca(X,NbSources,nmax,Kmin)
 
 %  Sped-Up GMCA
 %
@@ -21,7 +21,7 @@ function [piA,S] = fgmca(X,NbSources,nmax,Kmin)
 %  
 
 [NbChannels,NbSamples] = size(X);
-
+his1 = [];
 for ll=1:NbChannels
 	
 	X(ll,:) = X(ll,:) - mean(X(ll,:))*ones(size(X(ll,:)));
@@ -64,7 +64,7 @@ for pp=1:nmax
              end
                            
              KS = KS - DKS; % decrease threshold 
-
+             his1 = [his1 norm(X-AA*SEst_r,'fro')];
 end
 
 S = SEst_r;

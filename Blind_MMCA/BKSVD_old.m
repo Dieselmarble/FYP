@@ -1,11 +1,11 @@
-function [D2,X2,d2] = BKSVD_old(Y,K,k,s,d0,max_it);
+function [D2,X2] = BKSVD_old(Y,K,k,s,d0,max_it,D1);
 %Run BKSVD+SAC
 
 % initialize dictionary with random columns of norm 1
-D1 = randn(size(Y,1),K);
-D1 = D1 ./  repmat(sqrt(sum(D1.^2)),size(Y,1),1);
+% D1 = randn(size(Y,1),K);
+% D1 = D1 ./  repmat(sqrt(sum(D1.^2)),size(Y,1),1);
 D2 = D1;
-X1 = []; C1 = [];
+X2 = []; C2 = [];
 % h=waitbar(0,'BK-SVD & SAC');
 for i = 1:max_it
     %ks-sparse reprentations of Y w.r.t D2 are calculated
@@ -22,4 +22,6 @@ for i = 1:max_it
 %     waitbar(i/max_it);
 end
 % close(h);
+% EY = norm(Y,'fro');
+% e2 = norm(Y-D2*X2,'fro')/1; %BKSVD error
 end

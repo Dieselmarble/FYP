@@ -13,9 +13,9 @@ clc
 clear all
 close all
 
-nmax= 10; % maximum number of iterations
+nmax= 80; % maximum number of iterations
 % add noise
-SNR_db = 10;
+SNR_db = 20;
 % load random states for repeatable experiments
 % load RandomStates
 % rand('state', rand_state);
@@ -68,7 +68,7 @@ Y = Y + std2(Y)*10^(-SNR_db/20)*randn(size(Y)); %add noise type I
 sigma = std2(Y_zeronoise)*10^(-SNR_db/20);
 
 % ----------------------  add noise type II --------------------- %
-sigmamin = 1.0;
+sigmamin = 0.5;
 % noise = randn(size(Y)) * sigmamin;
 % Y = Y + noise;                
 
@@ -79,7 +79,7 @@ stepsize = [6 6]; % was 2,2
 dicsz = 256;
 patchsz = 8;
 const=sqrt(1.15);
-numIteration = 1;
+numIteration = 2;
 
 % initial DCT dictionary, if needed
 Dictionary=zeros(patchsz,sqrt(dicsz));
@@ -176,7 +176,7 @@ DKS = (KS-Kmin)/(nmax);  %-- Should be changed - Typical values for an appropria
 
 
 s = 3; %dimension of blocks
-k = 2;
+k = 4;
 K = 256;           %Number of columns in dictionary
 max_it = 1;       %Nr of iterations for the algorithm to converge. 
 B = K/s;          %Number of blocks in D. Should be an order of magnitude higher than the 
@@ -184,7 +184,7 @@ B = K/s;          %Number of blocks in D. Should be an order of magnitude higher
 d0 = 1:K;         %block structure with K blocks of size 1 (i.e. block structure ignored)
 d = repmat(1:B, s,1); d = d(:)';  %block structure with B blocks of size s
 Re_all=[];
-
+atom_count = [];
 tic
 
 for (pp=1:nmax)
@@ -313,6 +313,8 @@ for (pp=1:nmax)
         his3(ff,pp)=norm(Data-Dictionary*CoefMatrix);
     end
     
+    count = nnz(All_Coef{ff});
+    atom_count = [atom_count;count];
     %     AA=AA2;    
 %     svd(AA)
 %     Dict_all = [Dict_all; Dictionary];
@@ -369,7 +371,8 @@ for (pp=1:nmax)
     KS = KS - DKS;
     %==========================================================================
     E = Y - AA*SEst_r;
-    Re = norm(E,2)/65536;
+    Re = X - SEst_r;
+    Re = norm(Re,2)/10;
     Re_all = [Re_all; Re];
     disp(pp)
 end
@@ -440,7 +443,9 @@ for imiter = 1:4
 end
 % mixing matrix criterion
 mmc(A,pinv(AA),Q)
-plot(Re_all);
+figure
+semilogy(1:nmax,his1)
+% plot(Re_all);
 
 %%
 

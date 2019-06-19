@@ -39,7 +39,7 @@ for noise = 1:length(SNR_list)
     SNR_db = SNR_list(noise);
     Xw = Xw_ + std2(Xw_)*10^(-SNR_db/20)*randn(size(Xw_));
     % use fast gmca algorithm
-    [piA,S] = fgmca(Xw,4,100,3); %optimal parameter (800,5) for soft thresholding ; (200,3) for hard thresholding
+    [piA,S,his1] = fgmca(Xw,4,100,3); %optimal parameter (800,5) for soft thresholding ; (200,3) for hard thresholding
     [MER,perm] = bss_eval_mix(pinv(piA),A);
     P = zeros(size(perm,1),size(perm,1));
     for i = 1:size(perm,1)

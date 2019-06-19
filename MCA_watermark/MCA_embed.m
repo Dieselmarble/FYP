@@ -65,14 +65,14 @@ tvregparam 	= 0.1;
 tvcomponent	= 1;
 expdecrease	= 1;
 lambdastop	= 1;
-sigma		= 1e-6;
+sigma		= 0;
 display		= 0;
-[parts,options]=MCA2_Bcr(imgc,dicts,pars1,pars2,pars3,itermax,tvregparam,tvcomponent,expdecrease,lambdastop,[],sigma,display);
-options.inputdata = 'Input image: Boy + Texture 256 x 256';
-options
+% [parts,options]=MCA2_Bcr(imgc,dicts,pars1,pars2,pars3,itermax,tvregparam,tvcomponent,expdecrease,lambdastop,[],sigma,display);
+% options.inputdata = 'Input image: Boy + Texture 256 x 256';
+load('decompose.mat');
 [ST,I] = dbstack;
-name=eval(['which(''' ST(1).name ''')']);
-eval(sprintf('save %s options -V6',[name(1:end-2) 'metadata']));
+% name=eval(['which(''' ST(1).name ''')']);
+% eval(sprintf('save %s options -V6',[name(1:end-2) 'metadata']));
 %%
 % read in key for PN generator
 file_name='_key.bmp';
@@ -85,7 +85,7 @@ rand('state',key);
 pn_sequence_zero=round(2*(rand(1,sum(sum(midband)))-0.5));
 
 % generate shell of watermarked image
-cover_object = parts(:,:,2);
+cover_object = parts(:,:,1); % contour
 watermarked_image = cover_object;
 % process the image in blocks
 x=1;
@@ -101,7 +101,7 @@ for (kk = 1:length(message_vector))
     if (message_vector(kk)==0)
         for ii=1:blocksize
             for jj=1:blocksize
-                if (midband(jj,ii)==1)
+                if (midband(jj,ii)==1) % if the resolution at this point is 1
                     dct_block(jj,ii)=dct_block(jj,ii)+k*pn_sequence_zero(ll);
                     ll=ll+1;
                 end
@@ -121,14 +121,14 @@ for (kk = 1:length(message_vector))
     end
 end
 %%
-% convert to uint8 and write the watermarked image out to a file
-watermarked_image_int=uint8(watermarked_image);
-imwrite(watermarked_image_int,'MCA_watermarked.bmp','bmp');
 
 % generate and display watermarked image
-temp = watermarked_image + parts(:,:,1);
+temp = watermarked_image + parts(:,:,2);
 figure;
 imshow(temp,[])
 title('Watermarked Image')
+% convert to uint8 and write the watermarked image out to a file
+watermarked_image_int=uint8(temp);
+imwrite(watermarked_image_int,'MCA_watermarked.bmp','bmp');
 %
-psnr(normalize(imgc),normalize(temp));
+psnr_c=10*log10(psnr(imgc,watermarked_image_int,Nc,Mc));%%

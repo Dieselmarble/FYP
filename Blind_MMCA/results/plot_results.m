@@ -37,13 +37,13 @@ xlabel('PSNR in dB')
 ylabel('Mixing Matrix Criterion')
 legend('GMCA','K-SVD','BK-SVD','Location','northeast')
 % --------------------------- %
-% figure;
-% hold on;
-% plot(list_PSNR,psnr_all_gmca.psnr_all,'-kd','LineWidth',2);
-% plot(list_PSNR,psnr_all_ksvd.psnr_all,'--ko','LineWidth',2);
-% plot(list_PSNR,psnr_all_bksvd.psnr_all,':k*','LineWidth',2);
-% hold off;
-% xlabel('PSNR in dB') 
-% ylabel('Sinal to Noise Ratio Recoved')
-% legend('GMCA','K-SVD','BK-SVD','Location','southeast')
-% % --------------------------- %
+figure;
+hold on;
+plot(list_PSNR,psnr_all_gmca.psnr_all,'-kd','LineWidth',2);
+plot(list_PSNR,psnr_all_ksvd.psnr_all,'--ko','LineWidth',2);
+plot(list_PSNR,psnr_all_bksvd.psnr_all,':k*','LineWidth',2);
+hold off;
+xlabel('PSNR in dB') 
+ylabel('Sinal to Noise Ratio Recoved')
+legend('GMCA','K-SVD','BK-SVD','Location','southeast')
+% --------------------------- %

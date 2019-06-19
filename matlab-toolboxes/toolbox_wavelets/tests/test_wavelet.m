@@ -2,10 +2,10 @@
 %   
 %   Copyright (c) 2003 Gabriel Peyré
 
-disp('---> ND Wavelet test.');
-M = gen_signal_2d(256,3);
-MM = fwt_isotropic(M,2);
-MM = fwt_hyperbolic(M,2);
+% disp('---> ND Wavelet test.');
+% M = gen_signal_2d(256,3);
+% MM = fwt_isotropic(M,2);
+% MM = fwt_hyperbolic(M,2);
 
 disp('---> 1D wavelet test.');
 timing1 = [];
